@@ -97,7 +97,7 @@ echo '{
 
 aws iam put-role-policy --role-name student1002-lambda-cli-role --policy-name AllowLambdaS3 --policy-document file:///tmp/role-policy.json
 
-aws lambda update-function-configuration --function-name student1002-github-webhook2 --environment "Variables={output_bucket=student100-aws-hugo-1,github_secrets=secretsecret}"
+aws lambda update-function-configuration --function-name student1002-github-webhook2 --environment "Variables={output_bucket=student1002-aws-hugo-1,github_secrets=secretsecret}"
 
 aws lambda create-function --function-name student1002-comments-post \
 --zip-file fileb://function.zip --handler comments.post --runtime python3.7 \
@@ -164,5 +164,3 @@ aws lambda update-function-code --function-name student1002-github-webhook2 \
 --zip-file fileb://function.zip
 
 aws iam put-role-policy --role-name student1002-lambda-cli-role --policy-name FullAccess --policy-document file:///tmp/new-policy.json
-
-test
