@@ -43,3 +43,5 @@ aws lambda invoke --function-name student1002-lab2 --log-type Tail \
 --cli-binary-format raw-in-base64-out \
 --payload '{"key1":"value1", "key2":"value2", "key3":"value3"}' \
 outputfile.txt
+
+test
