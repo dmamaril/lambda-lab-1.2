@@ -154,3 +154,5 @@ aws lambda update-function-code --function-name student1002-github-webhook2 \
 --zip-file fileb://function.zip
 
 aws iam put-role-policy --role-name student1002-lambda-cli-role --policy-name FullAccess --policy-document file:///tmp/new-policy.json
+
+test
