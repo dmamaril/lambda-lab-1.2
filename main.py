@@ -146,3 +146,11 @@ aws dynamodb create-table --table-name student1002-comments --attribute-definiti
 aws lambda update-function-configuration --function-name student1002-comments-get --environment "Variables={table_name=student1002-comments}" 
 aws lambda update-function-configuration --function-name student1002-comments-get --environment "Variables={table_name=student1002-comments}" 
 aws lambda update-function-configuration --function-name student1002-comments-post --environment "Variables={table_name=student1002-comments}" 
+
+aws lambda update-function-configuration --function-name student1002-dynamo-stream --environment "Variables={webhook_function=student1002-github-webhook2,full_name=dmamaril/lambda-lab-1.2,clone_url=https://github.com/dmamaril/lambda-lab-1.2.git}"
+aws lambda update-function-configuration --function-name student1002-github-webhook2 --environment "Variables={comment_function=student1002-comments-get}"
+
+aws lambda update-function-code --function-name student1002-github-webhook2 \
+--zip-file fileb://function.zip
+
+aws iam put-role-policy --role-name student1002-lambda-cli-role --policy-name FullAccess --policy-document file:///tmp/new-policy.json
