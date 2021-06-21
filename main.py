@@ -97,7 +97,7 @@ echo '{
 
 aws iam put-role-policy --role-name student1002-lambda-cli-role --policy-name AllowLambdaS3 --policy-document file:///tmp/role-policy.json
 
-aws lambda update-function-configuration --function-name student1002-github-webhook2 --environment "Variables={output_bucket=student100-aws-hugo-1,github_secrets='{THE_SECRET_YOU_SAVED_IN_1.3'}"
+aws lambda update-function-configuration --function-name student1002-github-webhook2 --environment "Variables={output_bucket=student100-aws-hugo-1,github_secrets=secretsecret}"
 
 aws lambda create-function --function-name student1002-comments-post \
 --zip-file fileb://function.zip --handler comments.post --runtime python3.7 \
@@ -110,6 +110,16 @@ aws lambda create-function --function-name student1002-comments-get \
 aws lambda create-function --function-name student1002-dynamo-stream \
 --zip-file fileb://function.zip --handler dynamo_stream.fake_webhook --runtime python3.7 \
 --role arn:aws:iam::994185329081:role/student1002-lambda-cli-role
+
+
+aws lambda update-function-code --function-name student1002-comments-post \
+--zip-file fileb://function.zip
+
+aws lambda update-function-code --function-name student1002-comments-get \
+--zip-file fileb://function.zip
+
+aws lambda update-function-code --function-name student1002-dynamo-stream \
+--zip-file fileb://function.zip
 
 
 aws dynamodb create-table --table-name student1002-comments --attribute-definitions AttributeName=uuid,AttributeType=S --key-schema AttributeName=uuid,KeyType=HASH --provisioned-throughput ReadCapacityUnits=1,WriteCapacityUnits=1
