@@ -44,6 +44,38 @@
     {{ if eq (getenv "HUGO_ENV") "production" | or (eq .Site.Params.env "production")  }}
       {{ template "_internal/google_analytics_async.html" . }}
     {{ end }}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+
+            $("#submit").click(function(e) {
+                e.preventDefault();
+
+                var name = $("#name").val(),
+                    page = $("#page").val(),
+                    comment = $("#comment").val();
+
+                $.ajax({
+                    type: "POST",
+                    url: '{{ .Site.Params.lambdaComments.endpoint | safeJS }}'.replace('\/', '/'),
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+                        'name': name,
+                        'page': page,
+                        'comment': comment
+                    }),
+                    success: function(res){
+                        $('#form-response').text('Comment Saved.');
+                    },
+                    error: function(){
+                        $('#form-response').text('Error.');
+                    }
+                });
+
+            })
+
+        });
+    </script>
   </head>
 
   <body class="ma0 {{ $.Param "body_classes"  | default "avenir bg-near-white"}}{{ with getenv "HUGO_ENV" }} {{ . }}{{ end }}">
