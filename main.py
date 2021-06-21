@@ -45,3 +45,56 @@ aws lambda invoke --function-name student1002-lab2 --log-type Tail \
 outputfile.txt
 
 test
+
+aws lambda update-function-code --function-name student1002-github-webhook2 \
+--zip-file fileb://function.zip
+
+{
+    "FunctionName": "student1002-github-webhook2",
+    "FunctionArn": "arn:aws:lambda:us-east-2:994185329081:function:student1002-github-webhook2",
+    "Runtime": "python3.7",
+    "Role": "arn:aws:iam::994185329081:role/student1002-lambda-cli-role",
+    "Handler": "webhook.post",
+    "CodeSize": 5635243,
+    "Description": "",
+    "Timeout": 3,
+    "MemorySize": 128,
+    "LastModified": "2021-06-21T19:59:03.448+0000",
+    "CodeSha256": "aKVdMZwLqYWSgroeRNpcyfFDHWKpWQmjz5f2Z40dEJc=",
+    "Version": "$LATEST",
+    "TracingConfig": {
+        "Mode": "PassThrough"
+    },
+    "RevisionId": "19eb4d9c-0f29-4ff8-bab1-b9038177fbec",
+    "State": "Active",
+    "LastUpdateStatus": "Successful",
+    "PackageType": "Zip"
+}
+
+aws lambda update-function-configuration --function-name student1002-github-webhook2 \
+--timeout 300
+
+aws lambda update-function-configuration --function-name student1002-github-webhook2 \
+--memory 512
+
+echo '{
+    "Version": "2012-10-17",
+    "Statement": [{
+        "Action": [
+            "s3:GetObject",
+            "s3:ListBucket",
+            "s3:GetBucketLocation",
+            "s3:PutObject",
+            "s3:DeleteObject"
+        ],
+        "Resource": [
+            "arn:aws:s3:::student1002-aws-hugo-1",
+            "arn:aws:s3:::student1002-aws-hugo-1/*"
+        ],
+        "Effect": "Allow"
+    }]
+}' > /tmp/role-policy.json
+
+aws iam put-role-policy --role-name student1002-lambda-cli-role --policy-name AllowLambdaS3 --policy-document file:///tmp/role-policy.json
+
+aws lambda update-function-configuration --function-name student1002-github-webhook2 --environment "Variables={output_bucket=student1002-aws-hugo-1,github_secrets='secretsecret'}"
