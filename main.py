@@ -164,3 +164,73 @@ aws lambda update-function-code --function-name student1002-github-webhook2 \
 --zip-file fileb://function.zip
 
 aws iam put-role-policy --role-name student1002-lambda-cli-role --policy-name FullAccess --policy-document file:///tmp/new-policy.json
+
+aws lambda update-function-code --function-name student1002-comments-get \
+--zip-file fileb://function.zip
+
+
+## LAB 2.1
+sam init --runtime python3.7
+aws s3 mb s3://student1002-sam-deploy
+sam package --output-template-file packaged.yaml --s3-bucket student1002-sam-deploy
+sam deploy --template-file packaged.yaml --stack-name student1002-sam-app --capabilities CAPABILITY_IAM
+
+---------------------------------------------------------------------------------------
+|                                   DescribeStacks                                    |
++-------------+-----------------------------------------------------------------------+
+|  Description|  API Gateway endpoint URL for Prod stage for Hello World function     |
+|  OutputKey  |  HelloWorldApi                                                        |
+|  OutputValue|  https://30q5fnqwj7.execute-api.us-east-2.amazonaws.com/Prod/hello/   |
++-------------+-----------------------------------------------------------------------+
+
+## LAB 2.2
+sam build --use-container 
+ sam package --output-template-file packaged.yaml --s3-bucket student1002-sam-deploy
+ sam deploy --template-file packaged.yaml --stack-name student1002-blog-stack --capabilities CAPABILITY_IAM
+
+
+## OUTPUT
+CloudFormation outputs from deployed stack
+------------------------------------------------------------------------------------------------------------------------------
+Outputs
+------------------------------------------------------------------------------------------------------------------------------
+Key                 Student00CommentsPostSAM
+Description         CommentsPost Lambda Function ARN
+Value               arn:aws:lambda:us-east-2:994185329081:function:student1002-blog-stack-Student00CommentsPostSAM-
+oKbAdUYrQ8Yl
+
+Key                 Student00GithubWebhookSAM
+Description         GithubWebhook Lambda Function ARN
+Value               arn:aws:lambda:us-east-2:994185329081:function:student1002-blog-stack-Student00GithubWebhookSAM-
+Xh4sywmohSXF
+
+Key                 Student00CommentsGetSAM
+Description         CommentsGet Lambda Function ARN
+Value               arn:aws:lambda:us-east-2:994185329081:function:student1002-blog-stack-Student00CommentsGetSAM-
+sh5BjpN8x5pk
+
+Key                 HugoBlogWebhook
+Description         API Gateway endpoint URL for Prod stage for Hugo static site github webhook
+Value               https://qbd70vt420.execute-api.us-east-2.amazonaws.com/Prod/webhook/
+
+Key                 WebsiteURL
+Description         URL for website hosted on S3
+Value               http://student1002-blog-stack-student00hugositebucket-1sbbmjryzvcmj.s3-website.us-east-2.amazonaws.com
+
+Key                 HugoBlogComments
+Description         API Gateway endpoint URL for Prod stage for Hugo static site github webhook
+Value               https://qbd70vt420.execute-api.us-east-2.amazonaws.com/Prod/comments/
+------------------------------------------------------------------------------------------------------------------------------
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+|                                                                                                       DescribeStacks                                                                                                       |
++------------------------------------------------------------------------------+----------------------------+----------------------------------------------------------------------------------------------------------------+
+|                                  Description                                 |         OutputKey          |                                                  OutputValue                                                   |
++------------------------------------------------------------------------------+----------------------------+----------------------------------------------------------------------------------------------------------------+
+|  CommentsPost Lambda Function ARN                                            |  Student00CommentsPostSAM  |  arn:aws:lambda:us-east-2:994185329081:function:student1002-blog-stack-Student00CommentsPostSAM-oKbAdUYrQ8Yl   |
+|  GithubWebhook Lambda Function ARN                                           |  Student00GithubWebhookSAM |  arn:aws:lambda:us-east-2:994185329081:function:student1002-blog-stack-Student00GithubWebhookSAM-Xh4sywmohSXF  |
+|  CommentsGet Lambda Function ARN                                             |  Student00CommentsGetSAM   |  arn:aws:lambda:us-east-2:994185329081:function:student1002-blog-stack-Student00CommentsGetSAM-sh5BjpN8x5pk    |
+|  API Gateway endpoint URL for Prod stage for Hugo static site github webhook |  HugoBlogWebhook           |  https://qbd70vt420.execute-api.us-east-2.amazonaws.com/Prod/webhook/                                          |
+|  URL for website hosted on S3                                                |  WebsiteURL                |  http://student1002-blog-stack-student00hugositebucket-1sbbmjryzvcmj.s3-website.us-east-2.amazonaws.com        |
+|  API Gateway endpoint URL for Prod stage for Hugo static site github webhook |  HugoBlogComments          |  https://qbd70vt420.execute-api.us-east-2.amazonaws.com/Prod/comments/                                         |
++------------------------------------------------------------------------------+----------------------------+----------------------------------------------------------------------------------------------------------------+
