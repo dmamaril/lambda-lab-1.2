@@ -1,0 +1,915 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Description": "The AWS CloudFormation template for this Serverless application",
+  "Resources": {
+    "ServerlessDeploymentBucket": {
+      "Type": "AWS::S3::Bucket",
+      "Properties": {
+        "BucketEncryption": {
+          "ServerSideEncryptionConfiguration": [
+            {
+              "ServerSideEncryptionByDefault": {
+                "SSEAlgorithm": "AES256"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "ServerlessDeploymentBucketPolicy": {
+      "Type": "AWS::S3::BucketPolicy",
+      "Properties": {
+        "Bucket": {
+          "Ref": "ServerlessDeploymentBucket"
+        },
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "s3:*",
+              "Effect": "Deny",
+              "Principal": "*",
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":s3:::",
+                      {
+                        "Ref": "ServerlessDeploymentBucket"
+                      },
+                      "/*"
+                    ]
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":s3:::",
+                      {
+                        "Ref": "ServerlessDeploymentBucket"
+                      }
+                    ]
+                  ]
+                }
+              ],
+              "Condition": {
+                "Bool": {
+                  "aws:SecureTransport": false
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    "Student00GithubWebhookSAMLogGroup": {
+      "Type": "AWS::Logs::LogGroup",
+      "Properties": {
+        "LogGroupName": "/aws/lambda/github-webhook-student1002appd"
+      }
+    },
+    "Student00CommentsPostSAMLogGroup": {
+      "Type": "AWS::Logs::LogGroup",
+      "Properties": {
+        "LogGroupName": "/aws/lambda/comment-post-student1002appd"
+      }
+    },
+    "Student00CommentsGetSAMLogGroup": {
+      "Type": "AWS::Logs::LogGroup",
+      "Properties": {
+        "LogGroupName": "/aws/lambda/comment-get-student1002appd"
+      }
+    },
+    "Student00DynamoStreamSAMLogGroup": {
+      "Type": "AWS::Logs::LogGroup",
+      "Properties": {
+        "LogGroupName": "/aws/lambda/dynamo-stream-student1002appd"
+      }
+    },
+    "IamRoleLambdaExecution": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Principal": {
+                "Service": [
+                  "lambda.amazonaws.com"
+                ]
+              },
+              "Action": [
+                "sts:AssumeRole"
+              ]
+            }
+          ]
+        },
+        "Policies": [
+          {
+            "PolicyName": {
+              "Fn::Join": [
+                "-",
+                [
+                  "student00-static-blog-student1002appd",
+                  "dev",
+                  "lambda"
+                ]
+              ]
+            },
+            "PolicyDocument": {
+              "Version": "2012-10-17",
+              "Statement": [
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "logs:CreateLogStream",
+                    "logs:CreateLogGroup"
+                  ],
+                  "Resource": [
+                    {
+                      "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/github-webhook-student1002appd:*"
+                    },
+                    {
+                      "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/comment-post-student1002appd:*"
+                    },
+                    {
+                      "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/comment-get-student1002appd:*"
+                    },
+                    {
+                      "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/dynamo-stream-student1002appd:*"
+                    }
+                  ]
+                },
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "logs:PutLogEvents"
+                  ],
+                  "Resource": [
+                    {
+                      "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/github-webhook-student1002appd:*:*"
+                    },
+                    {
+                      "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/comment-post-student1002appd:*:*"
+                    },
+                    {
+                      "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/comment-get-student1002appd:*:*"
+                    },
+                    {
+                      "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/dynamo-stream-student1002appd:*:*"
+                    }
+                  ]
+                },
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "cloudwatch:*",
+                    "events:*",
+                    "dynamodb:*",
+                    "lambda:*",
+                    "logs:*",
+                    "s3:*"
+                  ],
+                  "Resource": [
+                    "*"
+                  ]
+                },
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "dynamodb:GetRecords",
+                    "dynamodb:GetShardIterator",
+                    "dynamodb:DescribeStream",
+                    "dynamodb:ListStreams"
+                  ],
+                  "Resource": [
+                    {
+                      "Fn::GetAtt": [
+                        "student00CommentsTable",
+                        "StreamArn"
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        ],
+        "Path": "/",
+        "RoleName": {
+          "Fn::Join": [
+            "-",
+            [
+              "student00-static-blog-student1002appd",
+              "dev",
+              {
+                "Ref": "AWS::Region"
+              },
+              "lambdaRole"
+            ]
+          ]
+        }
+      }
+    },
+    "Student00LibcLambdaLayer": {
+      "Type": "AWS::Lambda::LayerVersion",
+      "Properties": {
+        "Content": {
+          "S3Bucket": {
+            "Ref": "ServerlessDeploymentBucket"
+          },
+          "S3Key": "serverless/student00-static-blog-student1002appd/dev/1624395306277-2021-06-22T20:55:06.277Z/lambda-layer-libstdc.zip"
+        },
+        "LayerName": "student00Libc"
+      }
+    },
+    "Student00AwsCliLambdaLayer": {
+      "Type": "AWS::Lambda::LayerVersion",
+      "Properties": {
+        "Content": {
+          "S3Bucket": {
+            "Ref": "ServerlessDeploymentBucket"
+          },
+          "S3Key": "serverless/student00-static-blog-student1002appd/dev/1624395306277-2021-06-22T20:55:06.277Z/lambda-layer-awscli-1.16.115.zip"
+        },
+        "LayerName": "student00AwsCli"
+      }
+    },
+    "Student00HugoLambdaLayer": {
+      "Type": "AWS::Lambda::LayerVersion",
+      "Properties": {
+        "Content": {
+          "S3Bucket": {
+            "Ref": "ServerlessDeploymentBucket"
+          },
+          "S3Key": "serverless/student00-static-blog-student1002appd/dev/1624395306277-2021-06-22T20:55:06.277Z/lambda-layer-hugo-0.54.zip"
+        },
+        "LayerName": "student00Hugo"
+      }
+    },
+    "Student00GithubWebhookSAMLambdaFunction": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "S3Bucket": {
+            "Ref": "ServerlessDeploymentBucket"
+          },
+          "S3Key": "serverless/student00-static-blog-student1002appd/dev/1624395306277-2021-06-22T20:55:06.277Z/student00-static-blog-student1002appd.zip"
+        },
+        "Handler": "github_webhook/webhook.post",
+        "Runtime": "python3.7",
+        "FunctionName": "github-webhook-student1002appd",
+        "MemorySize": 256,
+        "Timeout": 300,
+        "Environment": {
+          "Variables": {
+            "output_bucket": "hugo-static-site-student1002appd",
+            "comment_function": "comment-get-student1002appd",
+            "github_secrets": "secretsecret"
+          }
+        },
+        "Role": {
+          "Fn::GetAtt": [
+            "IamRoleLambdaExecution",
+            "Arn"
+          ]
+        },
+        "Layers": [
+          {
+            "Ref": "Student00AwsCliLambdaLayer"
+          },
+          {
+            "Ref": "Student00LibcLambdaLayer"
+          },
+          {
+            "Ref": "Student00HugoLambdaLayer"
+          }
+        ]
+      },
+      "DependsOn": [
+        "Student00GithubWebhookSAMLogGroup"
+      ]
+    },
+    "Student00CommentsPostSAMLambdaFunction": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "S3Bucket": {
+            "Ref": "ServerlessDeploymentBucket"
+          },
+          "S3Key": "serverless/student00-static-blog-student1002appd/dev/1624395306277-2021-06-22T20:55:06.277Z/student00-static-blog-student1002appd.zip"
+        },
+        "Handler": "comments/comments.post",
+        "Runtime": "python3.7",
+        "FunctionName": "comment-post-student1002appd",
+        "MemorySize": 1024,
+        "Timeout": 300,
+        "Environment": {
+          "Variables": {
+            "table_name": "hugo-comments-student1002appd"
+          }
+        },
+        "Role": {
+          "Fn::GetAtt": [
+            "IamRoleLambdaExecution",
+            "Arn"
+          ]
+        }
+      },
+      "DependsOn": [
+        "Student00CommentsPostSAMLogGroup"
+      ]
+    },
+    "Student00CommentsGetSAMLambdaFunction": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "S3Bucket": {
+            "Ref": "ServerlessDeploymentBucket"
+          },
+          "S3Key": "serverless/student00-static-blog-student1002appd/dev/1624395306277-2021-06-22T20:55:06.277Z/student00-static-blog-student1002appd.zip"
+        },
+        "Handler": "comments/comments.get",
+        "Runtime": "python3.7",
+        "FunctionName": "comment-get-student1002appd",
+        "MemorySize": 1024,
+        "Timeout": 300,
+        "Environment": {
+          "Variables": {
+            "table_name": "hugo-comments-student1002appd"
+          }
+        },
+        "Role": {
+          "Fn::GetAtt": [
+            "IamRoleLambdaExecution",
+            "Arn"
+          ]
+        }
+      },
+      "DependsOn": [
+        "Student00CommentsGetSAMLogGroup"
+      ]
+    },
+    "Student00DynamoStreamSAMLambdaFunction": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "S3Bucket": {
+            "Ref": "ServerlessDeploymentBucket"
+          },
+          "S3Key": "serverless/student00-static-blog-student1002appd/dev/1624395306277-2021-06-22T20:55:06.277Z/student00-static-blog-student1002appd.zip"
+        },
+        "Handler": "dynamo_stream/dynamo_stream.fake_webhook",
+        "Runtime": "python3.7",
+        "FunctionName": "dynamo-stream-student1002appd",
+        "MemorySize": 1024,
+        "Timeout": 300,
+        "Environment": {
+          "Variables": {
+            "webhook_function": "github-webhook-student1002appd",
+            "full_name": "dmamaril/lambda-lab-1.2",
+            "clone_url": "https://github.com/dmamaril/lambda-lab-1.2.git"
+          }
+        },
+        "Role": {
+          "Fn::GetAtt": [
+            "IamRoleLambdaExecution",
+            "Arn"
+          ]
+        }
+      },
+      "DependsOn": [
+        "Student00DynamoStreamSAMLogGroup"
+      ]
+    },
+    "Student00CommentsPostSAMLambdaVersionj1Xa0YIcJkY66ptO7YzJTDgcw1yjBxl718ONyH9shU": {
+      "Type": "AWS::Lambda::Version",
+      "DeletionPolicy": "Retain",
+      "Properties": {
+        "FunctionName": {
+          "Ref": "Student00CommentsPostSAMLambdaFunction"
+        },
+        "CodeSha256": "3q/BobFzw75BKVuTiIw21WU2nHTis8q91Pi9Pc7ITAo="
+      }
+    },
+    "Student00CommentsGetSAMLambdaVersionYVmFgZgUs7JU0dp1D19lfNgqjWaINlTjgDimwEduc": {
+      "Type": "AWS::Lambda::Version",
+      "DeletionPolicy": "Retain",
+      "Properties": {
+        "FunctionName": {
+          "Ref": "Student00CommentsGetSAMLambdaFunction"
+        },
+        "CodeSha256": "3q/BobFzw75BKVuTiIw21WU2nHTis8q91Pi9Pc7ITAo="
+      }
+    },
+    "Student00DynamoStreamSAMLambdaVersion9DwYZLobS5ziIqmrPR0qTRDRGdpB6JjgXYzGEw2ElAc": {
+      "Type": "AWS::Lambda::Version",
+      "DeletionPolicy": "Retain",
+      "Properties": {
+        "FunctionName": {
+          "Ref": "Student00DynamoStreamSAMLambdaFunction"
+        },
+        "CodeSha256": "3q/BobFzw75BKVuTiIw21WU2nHTis8q91Pi9Pc7ITAo="
+      }
+    },
+    "Student00GithubWebhookSAMLambdaVersionmkSWPaJWZZg0yhi7rnYIDcVjpK7eO919xmbRwUyOE": {
+      "Type": "AWS::Lambda::Version",
+      "DeletionPolicy": "Retain",
+      "Properties": {
+        "FunctionName": {
+          "Ref": "Student00GithubWebhookSAMLambdaFunction"
+        },
+        "CodeSha256": "3q/BobFzw75BKVuTiIw21WU2nHTis8q91Pi9Pc7ITAo="
+      }
+    },
+    "ApiGatewayRestApi": {
+      "Type": "AWS::ApiGateway::RestApi",
+      "Properties": {
+        "Name": "dev-student00-static-blog-student1002appd",
+        "EndpointConfiguration": {
+          "Types": [
+            "EDGE"
+          ]
+        },
+        "Policy": ""
+      }
+    },
+    "ApiGatewayResourceWebhook": {
+      "Type": "AWS::ApiGateway::Resource",
+      "Properties": {
+        "ParentId": {
+          "Fn::GetAtt": [
+            "ApiGatewayRestApi",
+            "RootResourceId"
+          ]
+        },
+        "PathPart": "webhook",
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        }
+      }
+    },
+    "ApiGatewayResourceComments": {
+      "Type": "AWS::ApiGateway::Resource",
+      "Properties": {
+        "ParentId": {
+          "Fn::GetAtt": [
+            "ApiGatewayRestApi",
+            "RootResourceId"
+          ]
+        },
+        "PathPart": "comments",
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        }
+      }
+    },
+    "ApiGatewayMethodWebhookPost": {
+      "Type": "AWS::ApiGateway::Method",
+      "Properties": {
+        "HttpMethod": "POST",
+        "RequestParameters": {},
+        "ResourceId": {
+          "Ref": "ApiGatewayResourceWebhook"
+        },
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        },
+        "ApiKeyRequired": false,
+        "AuthorizationType": "NONE",
+        "Integration": {
+          "IntegrationHttpMethod": "POST",
+          "Type": "AWS_PROXY",
+          "Uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition"
+                },
+                ":apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "Student00GithubWebhookSAMLambdaFunction",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
+          }
+        },
+        "MethodResponses": []
+      }
+    },
+    "ApiGatewayMethodCommentsPost": {
+      "Type": "AWS::ApiGateway::Method",
+      "Properties": {
+        "HttpMethod": "POST",
+        "RequestParameters": {},
+        "ResourceId": {
+          "Ref": "ApiGatewayResourceComments"
+        },
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        },
+        "ApiKeyRequired": false,
+        "AuthorizationType": "NONE",
+        "Integration": {
+          "IntegrationHttpMethod": "POST",
+          "Type": "AWS_PROXY",
+          "Uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition"
+                },
+                ":apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "Student00CommentsPostSAMLambdaFunction",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
+          }
+        },
+        "MethodResponses": []
+      }
+    },
+    "ApiGatewayMethodCommentsOptions": {
+      "Type": "AWS::ApiGateway::Method",
+      "Properties": {
+        "HttpMethod": "OPTIONS",
+        "RequestParameters": {},
+        "ResourceId": {
+          "Ref": "ApiGatewayResourceComments"
+        },
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        },
+        "ApiKeyRequired": false,
+        "AuthorizationType": "NONE",
+        "Integration": {
+          "IntegrationHttpMethod": "POST",
+          "Type": "AWS_PROXY",
+          "Uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition"
+                },
+                ":apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "Student00CommentsPostSAMLambdaFunction",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
+          }
+        },
+        "MethodResponses": []
+      }
+    },
+    "ApiGatewayDeployment1624395293520": {
+      "Type": "AWS::ApiGateway::Deployment",
+      "Properties": {
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        },
+        "StageName": "dev"
+      },
+      "DependsOn": [
+        "ApiGatewayMethodWebhookPost",
+        "ApiGatewayMethodCommentsPost",
+        "ApiGatewayMethodCommentsOptions"
+      ]
+    },
+    "Student00GithubWebhookSAMLambdaPermissionApiGateway": {
+      "Type": "AWS::Lambda::Permission",
+      "Properties": {
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "Student00GithubWebhookSAMLambdaFunction",
+            "Arn"
+          ]
+        },
+        "Action": "lambda:InvokeFunction",
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:",
+              {
+                "Ref": "AWS::Partition"
+              },
+              ":execute-api:",
+              {
+                "Ref": "AWS::Region"
+              },
+              ":",
+              {
+                "Ref": "AWS::AccountId"
+              },
+              ":",
+              {
+                "Ref": "ApiGatewayRestApi"
+              },
+              "/*/*"
+            ]
+          ]
+        }
+      }
+    },
+    "Student00CommentsPostSAMLambdaPermissionApiGateway": {
+      "Type": "AWS::Lambda::Permission",
+      "Properties": {
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "Student00CommentsPostSAMLambdaFunction",
+            "Arn"
+          ]
+        },
+        "Action": "lambda:InvokeFunction",
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:",
+              {
+                "Ref": "AWS::Partition"
+              },
+              ":execute-api:",
+              {
+                "Ref": "AWS::Region"
+              },
+              ":",
+              {
+                "Ref": "AWS::AccountId"
+              },
+              ":",
+              {
+                "Ref": "ApiGatewayRestApi"
+              },
+              "/*/*"
+            ]
+          ]
+        }
+      }
+    },
+    "Student00DynamoStreamSAMEventSourceMappingDynamodbStudent00CommentsTable": {
+      "Type": "AWS::Lambda::EventSourceMapping",
+      "DependsOn": [
+        "IamRoleLambdaExecution"
+      ],
+      "Properties": {
+        "BatchSize": 10,
+        "EventSourceArn": {
+          "Fn::GetAtt": [
+            "student00CommentsTable",
+            "StreamArn"
+          ]
+        },
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "Student00DynamoStreamSAMLambdaFunction",
+            "Arn"
+          ]
+        },
+        "StartingPosition": "TRIM_HORIZON",
+        "Enabled": true
+      }
+    },
+    "student00CommentsTable": {
+      "Type": "AWS::DynamoDB::Table",
+      "Properties": {
+        "TableName": "hugo-comments-student1002appd",
+        "AttributeDefinitions": [
+          {
+            "AttributeName": "uuid",
+            "AttributeType": "S"
+          }
+        ],
+        "KeySchema": [
+          {
+            "AttributeName": "uuid",
+            "KeyType": "HASH"
+          }
+        ],
+        "ProvisionedThroughput": {
+          "ReadCapacityUnits": 1,
+          "WriteCapacityUnits": 1
+        },
+        "StreamSpecification": {
+          "StreamViewType": "NEW_IMAGE"
+        }
+      }
+    },
+    "WebAppS3Bucket": {
+      "Type": "AWS::S3::Bucket",
+      "Properties": {
+        "BucketName": "hugo-static-site-student1002appd",
+        "AccessControl": "PublicRead",
+        "WebsiteConfiguration": {
+          "IndexDocument": "index.html"
+        }
+      }
+    },
+    "WebAppS3BucketPolicy": {
+      "Type": "AWS::S3::BucketPolicy",
+      "Properties": {
+        "Bucket": {
+          "Ref": "WebAppS3Bucket"
+        },
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Sid": "PublicReadGetObject",
+              "Effect": "Allow",
+              "Principal": "*",
+              "Action": [
+                "s3:GetObject"
+              ],
+              "Resource": "arn:aws:s3:::hugo-static-site-student1002appd/*"
+            }
+          ]
+        }
+      }
+    }
+  },
+  "Outputs": {
+    "ServerlessDeploymentBucketName": {
+      "Value": {
+        "Ref": "ServerlessDeploymentBucket"
+      },
+      "Export": {
+        "Name": "sls-student00-static-blog-student1002appd-dev-ServerlessDeploymentBucketName"
+      }
+    },
+    "Student00LibcLambdaLayerQualifiedArn": {
+      "Description": "Current Lambda layer version",
+      "Value": {
+        "Ref": "Student00LibcLambdaLayer"
+      },
+      "Export": {
+        "Name": "sls-student00-static-blog-student1002appd-dev-Student00LibcLambdaLayerQualifiedArn"
+      }
+    },
+    "Student00LibcLambdaLayerHash": {
+      "Description": "Current Lambda layer hash",
+      "Value": "24ba91ab266902b8657cfddbe52eb865f5a516ef",
+      "Export": {
+        "Name": "sls-student00-static-blog-student1002appd-dev-Student00LibcLambdaLayerHash"
+      }
+    },
+    "Student00LibcLambdaLayerS3Key": {
+      "Description": "Current Lambda layer S3Key",
+      "Value": "serverless/student00-static-blog-student1002appd/dev/1624395306277-2021-06-22T20:55:06.277Z/lambda-layer-libstdc.zip",
+      "Export": {
+        "Name": "sls-student00-static-blog-student1002appd-dev-Student00LibcLambdaLayerS3Key"
+      }
+    },
+    "Student00AwsCliLambdaLayerQualifiedArn": {
+      "Description": "Current Lambda layer version",
+      "Value": {
+        "Ref": "Student00AwsCliLambdaLayer"
+      },
+      "Export": {
+        "Name": "sls-student00-static-blog-student1002appd-dev-Student00AwsCliLambdaLayerQualifiedArn"
+      }
+    },
+    "Student00AwsCliLambdaLayerHash": {
+      "Description": "Current Lambda layer hash",
+      "Value": "66cf8f2e072ab652b167eb8778053d46e0921111",
+      "Export": {
+        "Name": "sls-student00-static-blog-student1002appd-dev-Student00AwsCliLambdaLayerHash"
+      }
+    },
+    "Student00AwsCliLambdaLayerS3Key": {
+      "Description": "Current Lambda layer S3Key",
+      "Value": "serverless/student00-static-blog-student1002appd/dev/1624395306277-2021-06-22T20:55:06.277Z/lambda-layer-awscli-1.16.115.zip",
+      "Export": {
+        "Name": "sls-student00-static-blog-student1002appd-dev-Student00AwsCliLambdaLayerS3Key"
+      }
+    },
+    "Student00HugoLambdaLayerQualifiedArn": {
+      "Description": "Current Lambda layer version",
+      "Value": {
+        "Ref": "Student00HugoLambdaLayer"
+      },
+      "Export": {
+        "Name": "sls-student00-static-blog-student1002appd-dev-Student00HugoLambdaLayerQualifiedArn"
+      }
+    },
+    "Student00HugoLambdaLayerHash": {
+      "Description": "Current Lambda layer hash",
+      "Value": "0a1214308e5801815549a825e3e591708c2c1f7c",
+      "Export": {
+        "Name": "sls-student00-static-blog-student1002appd-dev-Student00HugoLambdaLayerHash"
+      }
+    },
+    "Student00HugoLambdaLayerS3Key": {
+      "Description": "Current Lambda layer S3Key",
+      "Value": "serverless/student00-static-blog-student1002appd/dev/1624395306277-2021-06-22T20:55:06.277Z/lambda-layer-hugo-0.54.zip",
+      "Export": {
+        "Name": "sls-student00-static-blog-student1002appd-dev-Student00HugoLambdaLayerS3Key"
+      }
+    },
+    "Student00CommentsPostSAMLambdaFunctionQualifiedArn": {
+      "Description": "Current Lambda function version",
+      "Value": {
+        "Ref": "Student00CommentsPostSAMLambdaVersionj1Xa0YIcJkY66ptO7YzJTDgcw1yjBxl718ONyH9shU"
+      },
+      "Export": {
+        "Name": "sls-student00-static-blog-student1002appd-dev-Student00CommentsPostSAMLambdaFunctionQualifiedArn"
+      }
+    },
+    "Student00CommentsGetSAMLambdaFunctionQualifiedArn": {
+      "Description": "Current Lambda function version",
+      "Value": {
+        "Ref": "Student00CommentsGetSAMLambdaVersionYVmFgZgUs7JU0dp1D19lfNgqjWaINlTjgDimwEduc"
+      },
+      "Export": {
+        "Name": "sls-student00-static-blog-student1002appd-dev-Student00CommentsGetSAMLambdaFunctionQualifiedArn"
+      }
+    },
+    "Student00DynamoStreamSAMLambdaFunctionQualifiedArn": {
+      "Description": "Current Lambda function version",
+      "Value": {
+        "Ref": "Student00DynamoStreamSAMLambdaVersion9DwYZLobS5ziIqmrPR0qTRDRGdpB6JjgXYzGEw2ElAc"
+      },
+      "Export": {
+        "Name": "sls-student00-static-blog-student1002appd-dev-Student00DynamoStreamSAMLambdaFunctionQualifiedArn"
+      }
+    },
+    "Student00GithubWebhookSAMLambdaFunctionQualifiedArn": {
+      "Description": "Current Lambda function version",
+      "Value": {
+        "Ref": "Student00GithubWebhookSAMLambdaVersionmkSWPaJWZZg0yhi7rnYIDcVjpK7eO919xmbRwUyOE"
+      },
+      "Export": {
+        "Name": "sls-student00-static-blog-student1002appd-dev-Student00GithubWebhookSAMLambdaFunctionQualifiedArn"
+      }
+    },
+    "ServiceEndpoint": {
+      "Description": "URL of the service endpoint",
+      "Value": {
+        "Fn::Join": [
+          "",
+          [
+            "https://",
+            {
+              "Ref": "ApiGatewayRestApi"
+            },
+            ".execute-api.",
+            {
+              "Ref": "AWS::Region"
+            },
+            ".",
+            {
+              "Ref": "AWS::URLSuffix"
+            },
+            "/dev"
+          ]
+        ]
+      },
+      "Export": {
+        "Name": "sls-student00-static-blog-student1002appd-dev-ServiceEndpoint"
+      }
+    }
+  }
+}
