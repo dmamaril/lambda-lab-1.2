@@ -8,7 +8,7 @@ import hmac
 import hashlib
 import json
 import subprocess
-#TEST
+
 # Setup our standard logger. We re-use the same format in most places so we have a standard presentation
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
