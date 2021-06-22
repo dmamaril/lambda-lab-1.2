@@ -282,7 +282,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/student00-static-blog-student1002appd/dev/1624395306277-2021-06-22T20:55:06.277Z/student00-static-blog-student1002appd.zip"
+                "S3Key": "serverless/student00-static-blog-student1002appd/dev/1624395622713-2021-06-22T21:00:22.713Z/student00-static-blog-student1002appd.zip"
               },
               "Handler": "github_webhook/webhook.post",
               "Runtime": "python3.7",
@@ -325,7 +325,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/student00-static-blog-student1002appd/dev/1624395306277-2021-06-22T20:55:06.277Z/student00-static-blog-student1002appd.zip"
+                "S3Key": "serverless/student00-static-blog-student1002appd/dev/1624395622713-2021-06-22T21:00:22.713Z/student00-static-blog-student1002appd.zip"
               },
               "Handler": "comments/comments.post",
               "Runtime": "python3.7",
@@ -355,7 +355,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/student00-static-blog-student1002appd/dev/1624395306277-2021-06-22T20:55:06.277Z/student00-static-blog-student1002appd.zip"
+                "S3Key": "serverless/student00-static-blog-student1002appd/dev/1624395622713-2021-06-22T21:00:22.713Z/student00-static-blog-student1002appd.zip"
               },
               "Handler": "comments/comments.get",
               "Runtime": "python3.7",
@@ -385,7 +385,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/student00-static-blog-student1002appd/dev/1624395306277-2021-06-22T20:55:06.277Z/student00-static-blog-student1002appd.zip"
+                "S3Key": "serverless/student00-static-blog-student1002appd/dev/1624395622713-2021-06-22T21:00:22.713Z/student00-static-blog-student1002appd.zip"
               },
               "Handler": "dynamo_stream/dynamo_stream.fake_webhook",
               "Runtime": "python3.7",
@@ -410,44 +410,44 @@
               "Student00DynamoStreamSAMLogGroup"
             ]
           },
-          "Student00CommentsPostSAMLambdaVersionj1Xa0YIcJkY66ptO7YzJTDgcw1yjBxl718ONyH9shU": {
-            "Type": "AWS::Lambda::Version",
-            "DeletionPolicy": "Retain",
-            "Properties": {
-              "FunctionName": {
-                "Ref": "Student00CommentsPostSAMLambdaFunction"
-              },
-              "CodeSha256": "3q/BobFzw75BKVuTiIw21WU2nHTis8q91Pi9Pc7ITAo="
-            }
-          },
-          "Student00CommentsGetSAMLambdaVersionYVmFgZgUs7JU0dp1D19lfNgqjWaINlTjgDimwEduc": {
+          "Student00CommentsGetSAMLambdaVersionOTs7mSVGkJmCkyQtlCYUpWGnWG7YiPIQQjlngy2vdDE": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "Student00CommentsGetSAMLambdaFunction"
               },
-              "CodeSha256": "3q/BobFzw75BKVuTiIw21WU2nHTis8q91Pi9Pc7ITAo="
+              "CodeSha256": "B04L06URGIiooIevZ+rXdMDrrRWrzI9aJDwR2lGi27c="
             }
           },
-          "Student00DynamoStreamSAMLambdaVersion9DwYZLobS5ziIqmrPR0qTRDRGdpB6JjgXYzGEw2ElAc": {
+          "Student00CommentsPostSAMLambdaVersionXhctTP0CXsaQDgRV9MNMe2jf9JrHe0fTmPLPNWkbIjg": {
+            "Type": "AWS::Lambda::Version",
+            "DeletionPolicy": "Retain",
+            "Properties": {
+              "FunctionName": {
+                "Ref": "Student00CommentsPostSAMLambdaFunction"
+              },
+              "CodeSha256": "B04L06URGIiooIevZ+rXdMDrrRWrzI9aJDwR2lGi27c="
+            }
+          },
+          "Student00DynamoStreamSAMLambdaVersionEg5M69STucW6Z9evHtvac33JBY8i0OYusBVKqMuuhlw": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "Student00DynamoStreamSAMLambdaFunction"
               },
-              "CodeSha256": "3q/BobFzw75BKVuTiIw21WU2nHTis8q91Pi9Pc7ITAo="
+              "CodeSha256": "B04L06URGIiooIevZ+rXdMDrrRWrzI9aJDwR2lGi27c="
             }
           },
-          "Student00GithubWebhookSAMLambdaVersionmkSWPaJWZZg0yhi7rnYIDcVjpK7eO919xmbRwUyOE": {
+          "Student00GithubWebhookSAMLambdaVersionBr5hUDpDRjQt9FmSNfEFWvysjNBKTpiHVHfPofWYQs": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "Student00GithubWebhookSAMLambdaFunction"
               },
-              "CodeSha256": "3q/BobFzw75BKVuTiIw21WU2nHTis8q91Pi9Pc7ITAo="
+              "CodeSha256": "B04L06URGIiooIevZ+rXdMDrrRWrzI9aJDwR2lGi27c="
             }
           },
           "ApiGatewayRestApi": {
@@ -621,7 +621,7 @@
               "MethodResponses": []
             }
           },
-          "ApiGatewayDeployment1624395293520": {
+          "ApiGatewayDeployment1624395611164": {
             "Type": "AWS::ApiGateway::Deployment",
             "Properties": {
               "RestApiId": {
@@ -867,28 +867,28 @@
               "Name": "sls-student00-static-blog-student1002appd-dev-Student00HugoLambdaLayerS3Key"
             }
           },
-          "Student00CommentsPostSAMLambdaFunctionQualifiedArn": {
-            "Description": "Current Lambda function version",
-            "Value": {
-              "Ref": "Student00CommentsPostSAMLambdaVersionj1Xa0YIcJkY66ptO7YzJTDgcw1yjBxl718ONyH9shU"
-            },
-            "Export": {
-              "Name": "sls-student00-static-blog-student1002appd-dev-Student00CommentsPostSAMLambdaFunctionQualifiedArn"
-            }
-          },
           "Student00CommentsGetSAMLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "Student00CommentsGetSAMLambdaVersionYVmFgZgUs7JU0dp1D19lfNgqjWaINlTjgDimwEduc"
+              "Ref": "Student00CommentsGetSAMLambdaVersionOTs7mSVGkJmCkyQtlCYUpWGnWG7YiPIQQjlngy2vdDE"
             },
             "Export": {
               "Name": "sls-student00-static-blog-student1002appd-dev-Student00CommentsGetSAMLambdaFunctionQualifiedArn"
             }
           },
+          "Student00CommentsPostSAMLambdaFunctionQualifiedArn": {
+            "Description": "Current Lambda function version",
+            "Value": {
+              "Ref": "Student00CommentsPostSAMLambdaVersionXhctTP0CXsaQDgRV9MNMe2jf9JrHe0fTmPLPNWkbIjg"
+            },
+            "Export": {
+              "Name": "sls-student00-static-blog-student1002appd-dev-Student00CommentsPostSAMLambdaFunctionQualifiedArn"
+            }
+          },
           "Student00DynamoStreamSAMLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "Student00DynamoStreamSAMLambdaVersion9DwYZLobS5ziIqmrPR0qTRDRGdpB6JjgXYzGEw2ElAc"
+              "Ref": "Student00DynamoStreamSAMLambdaVersionEg5M69STucW6Z9evHtvac33JBY8i0OYusBVKqMuuhlw"
             },
             "Export": {
               "Name": "sls-student00-static-blog-student1002appd-dev-Student00DynamoStreamSAMLambdaFunctionQualifiedArn"
@@ -897,7 +897,7 @@
           "Student00GithubWebhookSAMLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "Student00GithubWebhookSAMLambdaVersionmkSWPaJWZZg0yhi7rnYIDcVjpK7eO919xmbRwUyOE"
+              "Ref": "Student00GithubWebhookSAMLambdaVersionBr5hUDpDRjQt9FmSNfEFWvysjNBKTpiHVHfPofWYQs"
             },
             "Export": {
               "Name": "sls-student00-static-blog-student1002appd-dev-Student00GithubWebhookSAMLambdaFunctionQualifiedArn"
@@ -1056,7 +1056,7 @@
         "memory": 256,
         "timeout": 300,
         "vpc": {},
-        "versionLogicalId": "Student00GithubWebhookSAMLambdaVersionmkSWPaJWZZg0yhi7rnYIDcVjpK7eO919xmbRwUyOE"
+        "versionLogicalId": "Student00GithubWebhookSAMLambdaVersionBr5hUDpDRjQt9FmSNfEFWvysjNBKTpiHVHfPofWYQs"
       },
       "Student00CommentsPostSAM": {
         "name": "comment-post-student1002appd",
@@ -1085,7 +1085,7 @@
         "memory": 1024,
         "timeout": 300,
         "vpc": {},
-        "versionLogicalId": "Student00CommentsPostSAMLambdaVersionj1Xa0YIcJkY66ptO7YzJTDgcw1yjBxl718ONyH9shU"
+        "versionLogicalId": "Student00CommentsPostSAMLambdaVersionXhctTP0CXsaQDgRV9MNMe2jf9JrHe0fTmPLPNWkbIjg"
       },
       "Student00CommentsGetSAM": {
         "name": "comment-get-student1002appd",
@@ -1099,7 +1099,7 @@
         "memory": 1024,
         "timeout": 300,
         "vpc": {},
-        "versionLogicalId": "Student00CommentsGetSAMLambdaVersionYVmFgZgUs7JU0dp1D19lfNgqjWaINlTjgDimwEduc"
+        "versionLogicalId": "Student00CommentsGetSAMLambdaVersionOTs7mSVGkJmCkyQtlCYUpWGnWG7YiPIQQjlngy2vdDE"
       },
       "Student00DynamoStreamSAM": {
         "name": "dynamo-stream-student1002appd",
@@ -1126,7 +1126,7 @@
         "memory": 1024,
         "timeout": 300,
         "vpc": {},
-        "versionLogicalId": "Student00DynamoStreamSAMLambdaVersion9DwYZLobS5ziIqmrPR0qTRDRGdpB6JjgXYzGEw2ElAc"
+        "versionLogicalId": "Student00DynamoStreamSAMLambdaVersionEg5M69STucW6Z9evHtvac33JBY8i0OYusBVKqMuuhlw"
       }
     },
     "resources": {
@@ -1209,17 +1209,20 @@
         "student00AwsCli": {
           "package": {
             "artifact": "layers/lambda-layer-awscli-1.16.115.zip"
-          }
+          },
+          "artifactAlreadyUploaded": true
         },
         "student00Libc": {
           "package": {
             "artifact": "layers/lambda-layer-libstdc.zip"
-          }
+          },
+          "artifactAlreadyUploaded": true
         },
         "student00Hugo": {
           "package": {
             "artifact": "layers/lambda-layer-hugo-0.54.zip"
-          }
+          },
+          "artifactAlreadyUploaded": true
         }
       },
       "functions": {
@@ -1236,7 +1239,7 @@
     "artifact": "/Users/donmamaril/Workspace/lambda-lab-1.2/serverless/.serverless/student00-static-blog-student1002appd.zip"
   },
   "package": {
-    "artifactDirectoryName": "serverless/student00-static-blog-student1002appd/dev/1624395306277-2021-06-22T20:55:06.277Z",
+    "artifactDirectoryName": "serverless/student00-static-blog-student1002appd/dev/1624395622713-2021-06-22T21:00:22.713Z",
     "artifact": "student00-static-blog-student1002appd.zip"
   }
 }
