@@ -80,7 +80,7 @@ def run_command(command):
 
 
 # Builds a hugo website using the source (the repo)
-# and desination for the public content
+# and destination for the public content
 def build_hugo(source_dir, destination_dir,debug=False):
     logger.info("Building Hugo site")
     run_command("/opt/hugo -s {0} -d {1}".format(source_dir,destination_dir))
@@ -154,17 +154,17 @@ def post(event, context):
     try:
         output_bucket = os.environ['output_bucket']
     except:
-        raise Exception('Output Bucket not defined. Set the environment variable for the funcion')
+        raise Exception('Output Bucket not defined. Set the environment variable for the function')
     
     try:
         comment_function = os.environ['comment_function']
     except:
-        raise Exception('Comment Function not defined. Set the environment variable for the funcion')
+        raise Exception('Comment Function not defined. Set the environment variable for the function')
 
     # Here we take a few steps to get the JSON into the body object
     # If this came in as a proxy request, or a direct API Gateway request
     # or a boto3 invokation the format of the body could be a few different types
-    # With this stepped approach we can gaurantee that no matter how this was caled
+    # With this stepped approach we can guarantee that no matter how this was called
     # we will have JSON in the body variable.
     if "body" in event:
         body = json.loads(event['body'])
@@ -195,7 +195,7 @@ def post(event, context):
         try:
             github_secrets = os.environ['github_secrets']
         except:
-            raise Exception('Github secrets not defined. Set the environment variable for the funcion')
+            raise Exception('Github secrets not defined. Set the environment variable for the function')
 
         if "headers" in event and "X-GitHub-Event" in event['headers']:
             # We only care about push events, if this isn't one politely exit
@@ -260,7 +260,7 @@ def post(event, context):
     # We have to return a status code otherwise the API Gateway will give a server error
     # however we are likely exceeding the 29s hard timeout limit on the API gateway
     # but if we can return correctly we should attempt to, that window could be changed later
-    # or we could execute in time occassionally
+    # or we could execute in time occasionally
     return {
             "statusCode": 200,
             "body": json.dumps('Successfully updated %s' % repo_name)
