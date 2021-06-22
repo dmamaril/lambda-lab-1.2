@@ -234,4 +234,4 @@ Value               https://qbd70vt420.execute-api.us-east-2.amazonaws.com/Prod/
 |  URL for website hosted on S3                                                |  WebsiteURL                |  http://student1002-blog-stack-student00hugositebucket-1sbbmjryzvcmj.s3-website.us-east-2.amazonaws.com        |
 |  API Gateway endpoint URL for Prod stage for Hugo static site github webhook |  HugoBlogComments          |  https://qbd70vt420.execute-api.us-east-2.amazonaws.com/Prod/comments/                                         |
 +------------------------------------------------------------------------------+----------------------------+----------------------------------------------------------------------------------------------------------------+
-test
+
